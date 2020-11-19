@@ -1,0 +1,81 @@
+unit Integracao_API.Model.ConexaoFD;
+
+interface
+
+uses
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, System.SysUtils, FireDAC.Phys.FBDef,
+  FireDAC.Comp.UI,
+  FireDAC.Phys.IBBase, FireDAC.Phys.FB;
+
+type
+  TConexaoFireDAC = class sealed
+  private
+    class var FInstancia: TConexaoFireDAC;
+  strict private
+    FConexaoBD: TFDConnection;
+    procedure CarregaDadosConexao;
+    class function GetInstancia: TConexaoFireDAC; static;
+  public
+    constructor Create;
+    destructor Destroy; Override;
+    property ConexaoBD: TFDConnection read FConexaoBD;
+    class property Instancia: TConexaoFireDAC read GetInstancia;
+  end;
+
+implementation
+
+uses
+  Vcl.Forms;
+
+{ TConexaoFD }
+
+procedure TConexaoFireDAC.CarregaDadosConexao;
+begin
+  try
+    FConexaoBD.Params.Clear;
+    FConexaoBD.Params.Values['DriverID']  := 'FB';
+    FConexaoBD.Params.Values['Server']    := '127.0.0.1';
+    FConexaoBD.Params.Values['Database']  := 'C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\BD\BASE.FDB';
+    FConexaoBD.Params.Values['User_name'] := 'SYSDBA';
+    FConexaoBD.Params.Values['Password']  := 'masterkey';
+    FConexaoBD.Params.Values['Protocol']  := 'TCPIP';
+    FConexaoBD.Connected := True;
+  except
+    on E : Exception do
+      Application.MessageBox('Erro ao se conectar com o banco de dados!', 'Aviso')
+  end;
+end;
+
+constructor TConexaoFireDAC.Create;
+begin
+  FConexaoBD := TFDConnection.Create(nil);
+  CarregaDadosConexao;
+end;
+
+destructor TConexaoFireDAC.Destroy;
+begin
+  if Assigned(FConexaoBD) then
+  begin
+    if FConexaoBD.Connected then
+      FConexaoBD.Close;
+    FreeAndNil(FConexaoBD);
+  end;
+  inherited;
+end;
+
+class function TConexaoFireDAC.GetInstancia: TConexaoFireDAC;
+begin
+  if not (Assigned((FInstancia))) then
+    FInstancia := TConexaoFireDAC.Create();
+  Result := FInstancia;
+end;
+
+initialization
+
+finalization
+  if  ( Assigned( TConexaoFireDAC.FInstancia ) ) then
+    FreeAndNil( TConexaoFireDAC.FInstancia );
+
+end.

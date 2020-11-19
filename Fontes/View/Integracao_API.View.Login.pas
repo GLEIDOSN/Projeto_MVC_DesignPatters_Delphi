@@ -1,0 +1,90 @@
+unit Integracao_API.View.Login;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls, Vcl.StdCtrls,
+  dxGDIPlusClasses, Integracao_API.Controller.Interfaces,
+  Integracao_API.Controller.Usuarios, Integracao_API.Model.Usuario,
+  Integracao_API.Model.Interfaces,
+  Integracao_API.Controller.Comments;
+
+type
+  TfrmLogin = class(TForm)
+    pnlPrincipal: TPanel;
+    btnFechar: TSpeedButton;
+    Shape1: TShape;
+    pnlImagem: TPanel;
+    imgFundo: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    imgLogo: TImage;
+    pnlUsuario: TPanel;
+    Label3: TLabel;
+    edtUsuario: TEdit;
+    pnlSenha: TPanel;
+    Label4: TLabel;
+    edtSenha: TEdit;
+    pnlBotao: TPanel;
+    btnEntrar: TSpeedButton;
+    pnlSair: TPanel;
+    btnSair: TSpeedButton;
+    lbl_Aviso: TLabel;
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure btnEntrarClick(Sender: TObject);
+  private
+    FControllerUsuario: IControllerUsuario;
+    FUsuario: IModelUsuario;
+  public
+
+  end;
+
+var
+  frmLogin: TfrmLogin;
+
+implementation
+
+uses
+  Integracao_API.View.Principal;
+
+{$R *.dfm}
+
+procedure TfrmLogin.btnEntrarClick(Sender: TObject);
+begin
+  lbl_Aviso.Visible := False;
+  //Para Testar sem precisar acessar  dados do banco
+  if (edtUsuario.Text = EmptyStr) and (edtSenha.Text = EmptyStr) then
+    close;
+  FUsuario := TUsuario.New;
+  FControllerUsuario := TControllerUsuario.New;
+  FUsuario.Login := edtUsuario.Text;
+  FUsuario.Senha := edtSenha.Text;
+  if FControllerUsuario.Login(FUsuario) then
+    close
+  else
+  begin
+    lbl_Aviso.Visible := True;
+    lbl_Aviso.Caption := '* Usuário ou senha inválidos, por favor, tente novamente.';
+  end;
+end;
+
+procedure TfrmLogin.btnFecharClick(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+procedure TfrmLogin.FormResize(Sender: TObject);
+begin
+  pnlPrincipal.Top := Round(frmLogin.Height / 2 - pnlPrincipal.Height / 2);
+  pnlPrincipal.Left := Round(frmLogin.Width / 2 - pnlPrincipal.Width / 2);
+end;
+
+procedure TfrmLogin.btnSairClick(Sender: TObject);
+begin
+  btnFechar.Click;
+end;
+
+end.

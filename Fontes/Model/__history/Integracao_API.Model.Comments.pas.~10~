@@ -1,0 +1,122 @@
+unit Integracao_API.Model.Comments;
+
+interface
+
+uses Integracao_API.Model.Interfaces;
+
+type
+  TComments = class(TInterfacedObject, IModelComments)
+  private
+    FPostID: Integer;
+    FID: Integer;
+    FName: string;
+    FEmail: string;
+    FBody: string;
+
+    function GetPostID: Integer;
+    function GetID: Integer;
+    function GetName: string;
+    function GetEmail: string;
+    function GetBody: string;
+
+    procedure SetPostID(aValue: Integer);
+    procedure SetID(aValue: Integer);
+    procedure SetName(aValue: string);
+    procedure SetEmail(aValue: string);
+    procedure SetBody(aValue: string);
+  public
+    constructor Create;
+    destructor Destroy; Override;
+    class function New: IModelComments;
+
+    function ObjToJSON: string;
+    function JSONToObj(aValue: string): IModelUsuario;
+
+    property PostID: Integer read GetPostID write SetPostID;
+    property ID: Integer read GetID write SetID;
+    property Name: string read GetName write SetName;
+    property Email: string read GetEmail write SetEmail;
+    property Body: string read GetBody write SetBody;
+  end;
+
+implementation
+
+{ TComments }
+
+constructor TComments.Create;
+begin
+
+end;
+
+destructor TComments.Destroy;
+begin
+
+  inherited;
+end;
+
+function TComments.GetBody: string;
+begin
+  Result := FBody;
+end;
+
+function TComments.GetEmail: string;
+begin
+  Result := FEmail;
+end;
+
+function TComments.GetID: Integer;
+begin
+  Result := FID;
+end;
+
+function TComments.GetName: string;
+begin
+  Result := FName;
+end;
+
+function TComments.GetPostID: Integer;
+begin
+  Result := FPostID;
+end;
+
+function TComments.JSONToObj(aValue: string): IModelUsuario;
+begin
+
+end;
+
+class function TComments.New: IModelComments;
+begin
+
+end;
+
+function TComments.ObjToJSON: string;
+begin
+
+end;
+
+procedure TComments.SetBody(aValue: string);
+begin
+  FBody := aValue;
+end;
+
+procedure TComments.SetEmail(aValue: string);
+begin
+  FEmail := aValue;
+end;
+
+procedure TComments.SetID(aValue: Integer);
+begin
+  FID := aValue;
+end;
+
+procedure TComments.SetName(aValue: string);
+begin
+  FName := aValue;
+end;
+
+procedure TComments.SetPostID(aValue: Integer);
+begin
+  FPostID := aValue;
+end;
+
+end.

@@ -1,0 +1,140 @@
+unit Integracao_API.View.Comentarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Integracao_API.View.CRUDBasic, Data.DB,
+  Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.ComCtrls,
+  Integracao_API.Controller.Comments, Integracao_API.Controller.Interfaces,
+  Integracao_API.Model.Comments, Integracao_API.Model.Interfaces,
+  Integracao_API.DAO.Interfaces;
+
+type
+  TfrmCDComentarios = class(TfrmCRUDBasic)
+    edtCodPostagem: TEdit;
+    edtCodigo: TEdit;
+    edtNome: TEdit;
+    mmBody: TMemo;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    edtEmail: TEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnAdicionarClick(Sender: TObject);
+    procedure btnEditarClick(Sender: TObject);
+    procedure btnConsultarClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+  private
+    FControllerComentarios: IControllerComments;
+    procedure LimpaCampos;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCDComentarios: TfrmCDComentarios;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCDComentarios.btnAdicionarClick(Sender: TObject);
+begin
+  inherited;
+  LimpaCampos;
+  pgCRUD.ActivePage := tbCadastro;
+end;
+
+procedure TfrmCDComentarios.btnCancelarClick(Sender: TObject);
+begin
+  inherited;
+  if Application.MessageBox('Deseja cancelar as alterações?', 'Aviso', MB_YESNO) = mrYes then
+    pgCRUD.ActivePage := tbConsulta;
+end;
+
+procedure TfrmCDComentarios.btnConsultarClick(Sender: TObject);
+var
+  ObjComments: IModelComments;
+begin
+  LimpaCampos;
+  ObjComments := FControllerComentarios.Buscar(dbgrCRUD.DataSource.DataSet.FieldByName('PostID').AsInteger,
+                                               dbgrCRUD.DataSource.DataSet.FieldByName('ID').AsInteger);
+  pgCRUD.ActivePage := tbCadastro;
+  edtCodPostagem.Text := ObjComments.PostID.ToString;
+  edtCodigo.Text := ObjComments.ID.ToString;
+  edtNome.Text := ObjComments.Name;
+  edtEmail.Text := ObjComments.Email;
+  mmBody.Lines.Add(ObjComments.Body);
+  inherited;
+end;
+
+procedure TfrmCDComentarios.btnEditarClick(Sender: TObject);
+var
+  ObjComments: IModelComments;
+begin
+  inherited;
+  LimpaCampos;
+  ObjComments := FControllerComentarios.Buscar(dbgrCRUD.DataSource.DataSet.FieldByName('PostID').AsInteger,
+                                               dbgrCRUD.DataSource.DataSet.FieldByName('ID').AsInteger);
+  pgCRUD.ActivePage := tbCadastro;
+  edtCodPostagem.Text := ObjComments.PostID.ToString;
+  edtCodigo.Text := ObjComments.ID.ToString;
+  edtNome.Text := ObjComments.Name;
+  edtEmail.Text := ObjComments.Email;
+  mmBody.Lines.Add(ObjComments.Body);
+end;
+
+procedure TfrmCDComentarios.btnExcluirClick(Sender: TObject);
+begin
+  if Application.MessageBox('Deseja cancelar as alterações?', 'Aviso', MB_YESNO) = mrYes then
+    FControllerComentarios.Excluir(dbgrCRUD.DataSource.DataSet.FieldByName('PostID').AsInteger,
+                                  dbgrCRUD.DataSource.DataSet.FieldByName('ID').AsInteger);
+  inherited;
+end;
+
+procedure TfrmCDComentarios.btnPesquisarClick(Sender: TObject);
+begin
+  inherited;
+  FControllerComentarios.BuscarTodos(dsCRUD);
+end;
+
+procedure TfrmCDComentarios.btnSalvarClick(Sender: TObject);
+var
+  objComments: IModelComments;
+begin
+  objComments := TComments.New;
+  objComments.PostID := StrToInt(edtCodPostagem.Text);
+  objComments.ID := StrToInt(edtCodigo.Text);
+  objComments.Name := edtNome.Text;
+  objComments.Email := edtEmail.Text;
+  objComments.Body := mmBody.Lines.Text;
+  if FEstadoInsercao then
+    FControllerComentarios.Salvar(tpInsert, objComments)
+  else
+    FControllerComentarios.Salvar(tpUpdate, objComments);
+  pgCRUD.ActivePage := tbConsulta;
+  inherited;
+end;
+
+procedure TfrmCDComentarios.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FControllerComentarios := TControllerComments.New;
+end;
+
+procedure TfrmCDComentarios.LimpaCampos;
+begin
+  edtCodPostagem.Clear;
+  edtCodigo.Clear;
+  edtNome.Clear;
+  edtEmail.Clear;
+  mmBody.Clear;
+end;
+
+end.

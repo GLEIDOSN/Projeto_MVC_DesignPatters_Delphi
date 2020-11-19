@@ -1,0 +1,50 @@
+unit Integracao_API.View.SincronizaAPI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TfrmSincronizaWEB = class(TForm)
+    gbxOpcoes: TGroupBox;
+    chkComentarios: TCheckBox;
+    pnlRodape: TPanel;
+    pnlBotao: TPanel;
+    btnSincronizar: TSpeedButton;
+    procedure btnSincronizarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmSincronizaWEB: TfrmSincronizaWEB;
+
+implementation
+
+uses
+  Integracao_API.Model.ConexaoAPI;
+
+{$R *.dfm}
+
+procedure TfrmSincronizaWEB.btnSincronizarClick(Sender: TObject);
+var
+  ConAPI: TConexaoAPI;
+begin
+  if chkComentarios.Checked then
+  begin
+    ConAPI := TConexaoAPI.Create;
+    try
+      ConAPI.RequestResource := 'comments';
+      ConAPI.Sincroniza;
+      ShowMessage('Sincronização concluída com sucesso!');
+    finally
+      FreeAndNil(ConAPI);
+    end;
+  end;
+end;
+
+end.

@@ -1,0 +1,195 @@
+unit Integracao_API.DAO.Comments;
+
+interface
+
+uses Integracao_API.DAO.Interfaces, Integracao_API.Model.Interfaces,
+  FireDAC.Comp.Client, FireDAC.Stan.Param, Data.DB,
+  System.Generics.Collections, Integracao_API.Utils.Helpers, FireDAC.UI.Intf,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Intf, FireDAC.Comp.UI, FireDAC.DApt,
+  Integracao_API.Model.ConexaoFD, Integracao_API.Model.Comments,
+  Integracao_API.DAO.Usuario;
+
+type
+  TDAOComments = class(TInterfacedObject, IDAOComments)
+  private
+    FComments: IModelComments;
+    FQuery: TFDQuery;
+    FConexaoBD: TFDConnection;
+    FJaCadastrado: Boolean;
+    procedure GravaLog(aTipoAlteracao: TTipoAcao; aTabela: string;
+      aDados: string);
+  public
+    constructor Create(aConexao: TFDConnection);
+    destructor Destroy; Override;
+    class function New(aConexao: TFDConnection): IDAOComments;
+    function ExisteRegistro(aPOSTID, aID: Integer): Boolean;
+
+    function Salvar(aAcao: TTipoAcao; aObj: IModelComments): Boolean;
+    function Excluir(aPOSTID, aID: Integer): Boolean;
+    function Buscar(aPOSTID, aID: Integer): IModelComments;
+    function BuscarTodos(aDataSource: TDataSource): IDAOComments;
+  end;
+
+implementation
+
+uses
+  System.SysUtils, System.Classes, Vcl.Forms;
+
+{ TDAoComments }
+
+function TDAOComments.Buscar(aPOSTID, aID: Integer): IModelComments;
+begin
+  Result := FComments;
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add('Select * from COMMENTS Where POSTID = :POSTID and ID = :ID');
+  FQuery.ParamByName('POSTID').AsInteger := aPOSTID;
+  FQuery.ParamByName('ID').AsInteger := aID;
+  try
+    FQuery.Open;
+    if not FQuery.IsEmpty then
+    begin
+      FComments.PostID := FQuery.FieldByName('POSTID').AsInteger;
+      FComments.ID     := FQuery.FieldByName('ID').AsInteger;
+      FComments.Name   := FQuery.FieldByName('Name').AsString;
+      FComments.Email  := FQuery.FieldByName('Email').AsString;
+      FComments.Body   := FQuery.FieldByName('Body').AsString;
+    end;
+  finally
+    FQuery.Close;
+  end;
+end;
+
+function TDAOComments.BuscarTodos(aDataSource: TDataSource): IDAOComments;
+begin
+  Result := Self;
+  FQuery.PreparaQuery;
+  aDataSource.DataSet := FQuery;
+  FQuery.SQL.Add('Select * from COMMENTS');
+  FQuery.Open;
+end;
+
+constructor TDAOComments.Create(aConexao: TFDConnection);
+begin
+  FConexaoBD := aConexao;
+  FQuery := TFDQuery.Create(nil);
+  FQuery.Connection := FConexaoBD;
+  FComments := TComments.New;
+end;
+
+destructor TDAOComments.Destroy;
+begin
+  FreeAndNil(FQuery);
+  inherited;
+end;
+
+function TDAOComments.Excluir(aPOSTID, aID: Integer): Boolean;
+begin
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add('Delete from COMMENTS Where POSTID = :POSTID and ID = :ID');
+  FQuery.ParamByName('POSTID').AsInteger := aPOSTID;
+  FQuery.ParamByName('ID').AsInteger := aID;
+  try
+    FQuery.ExecSQL;
+        GravaLog(tpDelete, 'COMMENTS', 'CodigoPost: ' + aPOSTID.ToString +
+                 ', ID: ' + aID.ToString);
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+function TDAOComments.ExisteRegistro(aPOSTID, aID: Integer): Boolean;
+begin
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add('Select POSTID from COMMENTS Where POSTID = :POSTID and ID = :ID');
+  FQuery.ParamByName('POSTID').AsInteger := aPOSTID;
+  FQuery.ParamByName('ID').AsInteger := aID;
+  try
+    FQuery.Open;
+    if FQuery.RecordCount > 0 then
+      Result := True
+    else
+      Result := False;
+  finally
+     FQuery.Close;
+  end;
+end;
+
+procedure TDAOComments.GravaLog(aTipoAlteracao: TTipoAcao;
+  aTabela, aDados: string);
+var
+  LogThread: TThread;
+  Arquivo : TextFile;
+  CaminhoArq: string;
+begin
+  LogThread := TThread.CreateAnonymousThread(procedure
+  begin
+    CaminhoArq := ExtractFilePath(Application.ExeName) + 'LogDetalhado.txt';
+    AssignFile(Arquivo, CaminhoArq);
+    if not fileexists(CaminhoArq) then
+      rewrite(Arquivo);
+    Append(Arquivo);
+    if (aTipoAlteracao = tpInsert) then
+      Writeln(Arquivo, aTabela + ' - Inserção de registro: ' + aDados)
+    else if (aTipoAlteracao = tpUpdate) then
+      Writeln(Arquivo, aTabela + ' - Atualização de registro: ' + aDados)
+    else if (aTipoAlteracao = tpDelete) then
+      Writeln(Arquivo, aTabela + ' - Exclusão de registro: ' + aDados);
+    CloseFile(Arquivo);
+  end);
+  LogThread.Start();
+end;
+
+class function TDAOComments.New(aConexao: TFDConnection): IDAOComments;
+begin
+  Result := Self.Create(aConexao);
+end;
+
+function TDAOComments.Salvar(aAcao: TTipoAcao; aObj: IModelComments): Boolean;
+begin
+  // FQuery.Close;
+  // FQuery.SQL.Clear;
+  FJaCadastrado := False;
+  if not ExisteRegistro(aObj.PostID, aObj.ID) or (aAcao = tpUpdate)  then
+  begin
+    FQuery.PreparaQuery;
+    case aAcao of
+      tpInsert:
+        begin
+          FQuery.SQL.Add
+            ('Insert into COMMENTS (POSTID, ID, Name, Email, Body) values ');
+          FQuery.SQL.Add('(:POSTID, :ID, :Name, :Email, :Body)');
+        end;
+      tpUpdate:
+        begin
+          FQuery.SQL.Add('Update COMMENTS Set ');
+          FQuery.SQL.Add('Name = :Name, ');
+          FQuery.SQL.Add('Email = :Email, ');
+          FQuery.SQL.Add('Body = :Body ');
+          FQuery.SQL.Add('Where POSTID = :POSTID and ID = :ID');
+        end;
+    end;
+    FQuery.ParamByName('POSTID').AsInteger := aObj.PostID;
+    FQuery.ParamByName('ID').AsInteger := aObj.ID;
+    FQuery.ParamByName('Name').AsString := aObj.Name;
+    FQuery.ParamByName('Email').AsString := aObj.Email;
+    FQuery.ParamByName('Body').AsString := aObj.Body;
+    try
+      FQuery.ExecSQL;
+      if aAcao = tpUpdate then
+        GravaLog(aAcao, 'COMMENTS', 'CodigoPost: ' + aObj.PostID.ToString +
+                 ', ID: ' + aObj.ID.ToString + ', Name: ' + aObj.Name + ', Email: ' + aObj.Email +
+                 ', Body' + aObj.Body);
+      Result := True;
+    except
+      Result := False;
+    end;
+  end
+  else
+  begin
+    FJaCadastrado := True;
+    Result := False;
+  end;
+end;
+
+end.

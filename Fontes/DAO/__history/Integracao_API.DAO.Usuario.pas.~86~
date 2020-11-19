@@ -1,0 +1,174 @@
+unit Integracao_API.DAO.Usuario;
+
+interface
+
+uses Integracao_API.DAO.Interfaces, Integracao_API.Model.Interfaces,
+  FireDAC.Comp.Client, FireDAC.Stan.Param, Data.DB,
+  Integracao_API.Model.Usuario, Integracao_API.Utils.Helpers, FireDAC.UI.Intf,
+  FireDAC.VCLUI.Wait, FireDAC.Stan.Intf, FireDAC.Comp.UI, FireDAC.DApt,
+  System.Generics.Collections,
+  System.Classes;
+
+type
+  TDAOUsuario = class(TInterfacedObject, IDAOUsuario)
+  private
+    FQuery: TFDQuery;
+    FUsuario: IModelUsuario;
+    FConexaoBD: TFDConnection;
+    procedure GravaLog(aTipoAlteracao: TTipoAcao; aTabela: string;
+      aDados: string);
+  public
+    constructor Create(aConexao: TFDConnection);
+    destructor Destroy; Override;
+    class function New(aConexao: TFDConnection): IDAOUsuario;
+
+    function Salvar(aAcao: TTipoAcao; aObj: IModelUsuario): Boolean;
+    function Excluir(aID: Integer): Boolean;
+    function Buscar(aID: Integer): IModelUsuario;
+    function BuscarTodos(aDataSource: TDataSource): IDAOUsuario;
+    function Login(aLogin, aSenha: string): Boolean;
+  end;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TDAOUsuario }
+
+function TDAOUsuario.Buscar(aID: Integer): IModelUsuario;
+begin
+  Result := FUsuario;
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add('Select * from USUARIOS Where Codigo = :Codigo');
+  FQuery.ParamByName('Codigo').AsInteger := aID;
+  try
+    FQuery.Open;
+    if not FQuery.IsEmpty then
+    begin
+      FUsuario.Codigo := FQuery.FieldByName('Codigo').AsInteger;
+      FUsuario.Nome := FQuery.FieldByName('Nome').AsString;
+      FUsuario.Endereco := FQuery.FieldByName('Endereco').AsString;
+      FUsuario.Numero := FQuery.FieldByName('Numero').AsInteger;
+      FUsuario.Bairro := FQuery.FieldByName('Bairro').AsString;
+      FUsuario.Cidade := FQuery.FieldByName('Cidade').AsString;
+      FUsuario.CEP := FQuery.FieldByName('CEP').AsString;
+      FUsuario.UF := FQuery.FieldByName('UF').AsString;
+      FUsuario.CPF := FQuery.FieldByName('CPF').AsString;
+      FUsuario.Login := FQuery.FieldByName('Login').AsString;
+      FUsuario.Senha := FQuery.FieldByName('Senha').AsString;
+    end;
+  finally
+    FQuery.Close;
+  end;
+end;
+
+function TDAOUsuario.BuscarTodos(aDataSource: TDataSource): IDAOUsuario;
+begin
+
+end;
+
+constructor TDAOUsuario.Create(aConexao: TFDConnection);
+begin
+  FConexaoBD := aConexao;
+  FQuery := TFDQuery.Create(nil);
+  FQuery.Connection := FConexaoBD;
+  FUsuario := TUsuario.New;
+end;
+
+destructor TDAOUsuario.Destroy;
+begin
+  FreeAndNil(FQuery);
+  inherited;
+end;
+
+function TDAOUsuario.Excluir(aID: Integer): Boolean;
+begin
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add('Delete from USUARIOS Where Codigo = :Codigo');
+  FQuery.ParamByName('Codigo').AsInteger := aID;
+  try
+    FQuery.ExecSQL;
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+procedure TDAOUsuario.GravaLog(aTipoAlteracao: TTipoAcao;
+  aTabela, aDados: string);
+begin
+
+end;
+
+function TDAOUsuario.Login(aLogin, aSenha: string): Boolean;
+begin
+  Result := False;
+  FQuery.PreparaQuery;
+  FQuery.SQL.Add
+    ('Select Login, Senha from USUARIOS Where Login = :Login and Senha = :Senha');
+  FQuery.ParamByName('Login').AsString := aLogin;
+  FQuery.ParamByName('Senha').AsString := aSenha;
+  try
+    FQuery.Open;
+    if not FQuery.IsEmpty then
+      Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+function TDAOUsuario.Salvar(aAcao: TTipoAcao; aObj: IModelUsuario): Boolean;
+begin
+  // FQuery.Close;
+  // FQuery.SQL.Clear;
+  FQuery.PreparaQuery;
+  case aAcao of
+    tpInsert:
+      begin
+        FQuery.SQL.Add
+          ('Insert into USUARIOS (Codigo, Nome, Endereco, Numero, Bairro, Cidade, CEP, UF, CPF, Login, Senha) values ');
+        FQuery.SQL.Add
+          ('(:Codigo, :Nome, :Endereco, :Numero, :Bairro, :Cidade, :CEP, :UF, :CPF, :Login, :Senha)');
+      end;
+    tpUpdate:
+      begin
+        FQuery.SQL.Add('Update USUARIOS Set ');
+        FQuery.SQL.Add('Nome = :Nome, ');
+        FQuery.SQL.Add('Endereco = :Endereco, ');
+        FQuery.SQL.Add('Numero = :Numero, ');
+        FQuery.SQL.Add('Bairro = :Bairro, ');
+        FQuery.SQL.Add('Cidade = :Cidade, ');
+        FQuery.SQL.Add('CEP = :CEP, ');
+        FQuery.SQL.Add('UF = :UF, ');
+        FQuery.SQL.Add('CPF = :CPF, ');
+        FQuery.SQL.Add('Login = :Login, ');
+        FQuery.SQL.Add('Senha = :Senha ');
+        FQuery.SQL.Add('Where Codigo = :Codigo');
+      end;
+  end;
+  FQuery.ParamByName('Codigo').AsInteger := aObj.Codigo;
+  FQuery.ParamByName('Nome').AsString := aObj.Nome;
+  FQuery.ParamByName('Endereco').AsString := aObj.Endereco;
+  FQuery.ParamByName('Numero').AsInteger := aObj.Numero;
+  FQuery.ParamByName('Bairro').AsString := aObj.Bairro;
+  FQuery.ParamByName('Cidade').AsString := aObj.Cidade;
+  FQuery.ParamByName('CEP').AsString := aObj.CEP;
+  FQuery.ParamByName('UF').AsString := aObj.UF;
+  FQuery.ParamByName('CPF').AsString := aObj.CPF;
+  FQuery.ParamByName('Login').AsString := aObj.Login;
+  FQuery.ParamByName('Senha').AsString := aObj.Senha;
+  try
+    FQuery.ExecSQL;
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+class function TDAOUsuario.New(aConexao: TFDConnection): IDAOUsuario;
+begin
+  Result := Self.Create(aConexao);
+end;
+
+end.

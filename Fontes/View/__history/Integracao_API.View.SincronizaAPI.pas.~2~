@@ -1,0 +1,29 @@
+unit Integracao_API.View.SincronizaAPI;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TfrmSincronizaWEB = class(TForm)
+    gbxOpcoes: TGroupBox;
+    chkComentarios: TCheckBox;
+    pnlRodape: TPanel;
+    pnlBotao: TPanel;
+    btnSincronizar: TSpeedButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmSincronizaWEB: TfrmSincronizaWEB;
+
+implementation
+
+{$R *.dfm}
+
+end.

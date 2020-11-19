@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2020/11/17 00:15:54.000.094,=C:\Users\Continental\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 00:16:43.000.278,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Principal.pas=C:\Users\Continental\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 00:16:43.000.278,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Principal.dfm=C:\Users\Continental\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2020/11/17 00:16:54.000.075,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Integracao_API.dproj=C:\Users\Continental\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2020/11/17 00:17:00.000.615,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 00:17:39.000.358,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Integracao_API.Model.Interfaces.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 00:31:00.000.071,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 00:31:31.000.350,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Usuario\Integracao_API.Model.Usuario.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 01:43:00.000.901,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 01:44:11.000.889,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\DAO\Integracao_API.DAO.Interfaces.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 02:09:08.000.386,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 02:09:16.000.752,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\DAO\Integracao_API.DAO.Usuario.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 02:17:05.000.835,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/17 02:18:29.000.696,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Conexao\Integracao_API.Model.ConexaoFD.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 06:42:45.000.071,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 06:45:48.000.320,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Utils\Integracao_API.Utils.Helpers.pas</Transaction>
+    <Transaction>2020/11/18 13:28:16.000.358,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 13:28:33.000.038,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Controller\Integracao_API.Controller.Interfaces.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 15:31:47.000.899,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 15:32:01.000.863,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Controller\Integracao_API.Controller.Usuarios.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 19:37:49.000.061,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Usuario\Integracao_API.Model.Usuario.pas=</Transaction>
+    <Transaction>2020/11/18 19:38:01.000.037,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Integracao_API.Model.Usuario.pas</Transaction>
+    <Transaction>2020/11/18 19:56:50.000.095,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 19:57:04.000.871,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\Integracao_API.Model.Comments.pas</Transaction>
+    <Transaction>2020/11/18 20:17:13.000.642,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 20:17:22.000.837,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\DAO\Integracao_API.DAO.Comments.pas</Transaction>
+    <Transaction>2020/11/18 23:37:49.000.730,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/18 23:37:56.000.737,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Controller\Integracao_API.Controller.Comments.pas</Transaction>
+    <Transaction>2020/11/19 00:10:46.000.191,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 00:11:50.000.103,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Model\ConexaoAPI\Integracao_API.Model.ConexaoAPI.pas</Transaction>
+    <Transaction>2020/11/19 02:17:10.000.422,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 02:26:51.000.961,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Login.pas</Transaction>
+    <Transaction>2020/11/19 02:26:51.000.961,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.dfm=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Login.dfm</Transaction>
+    <Transaction>2020/11/19 03:31:23.000.929,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 03:36:17.000.147,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.SincronizaAPI.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 03:36:17.000.147,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.SincronizaAPI.dfm=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.dfm</Transaction>
+    <Transaction>2020/11/19 03:56:31.000.909,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 03:58:07.000.703,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.CRUDBasic.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 03:58:07.000.703,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.CRUDBasic.dfm=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.dfm</Transaction>
+    <Transaction>2020/11/19 04:12:17.000.657,=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 04:12:31.000.723,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentários.dfm=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.dfm</Transaction>
+    <Transaction>2020/11/19 04:12:31.000.723,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentários.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\Unit1.pas</Transaction>
+    <Transaction>2020/11/19 04:17:54.000.357,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentários.pas=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentarios.pas</Transaction>
+    <Transaction>2020/11/19 04:17:54.000.357,C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentários.dfm=C:\Projeto_CM_Avaliação_Técnica_2_Gleidson_Freitas\Fontes\View\Integracao_API.View.Comentarios.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

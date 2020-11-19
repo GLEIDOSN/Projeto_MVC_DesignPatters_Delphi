@@ -1,0 +1,102 @@
+unit Integracao_API.Model.ConexaoAPI;
+
+interface
+
+uses
+  REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
+  System.JSON, Integracao_API.Model.Comments, Integracao_API.Model.Interfaces,
+  System.Generics.Collections, Integracao_API.Controller.Comments,
+  Integracao_API.Controller.Interfaces, Integracao_API.DAO.Interfaces,
+  Integracao_API.Model.ConexaoFD, Vcl.StdCtrls;
+
+type
+  TConexaoAPI = class
+  private
+    FRestClient: TRESTClient;
+    FRestResquest: TRESTRequest;
+    FRestResponse: TRESTResponse;
+
+    function GetRequestResource: string;
+    procedure SetRequestResource(aValue: string);
+
+    procedure ProcessaJSON(aLista: string);
+  public
+    constructor Create;
+    destructor Destroy; Override;
+    procedure Sincroniza(aMemo: TMemo = nil);
+
+    property RestClient: TRESTClient read FRestClient;
+    property RestResquest: TRESTRequest read FRestResquest;
+    property RestResponse: TRESTResponse read FRestResponse;
+    property RequestResource: string read GetRequestResource write SetRequestResource;
+  end;
+
+const
+  BASE_URL = 'https://jsonplaceholder.typicode.com/';
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TConexaoAPI }
+
+constructor TConexaoAPI.Create;
+begin
+  FRestClient := TRESTClient.Create(BASE_URL);
+  FRestResponse := TRESTResponse.Create(nil);
+  FRestResquest := TRESTRequest.Create(nil);
+  FRestResquest.Response := FRestResponse;
+  FRestResquest.Client := FRestClient;
+end;
+
+destructor TConexaoAPI.Destroy;
+begin
+  FreeAndNil(FRestResquest);
+  FreeAndNil(FRestResponse);
+  FreeAndNil(FRestClient);
+  inherited;
+end;
+
+procedure TConexaoAPI.Sincroniza(aMemo: TMemo = nil);
+begin
+  if FRestResquest.Resource = EmptyStr then
+    raise Exception.Create('Caminho no Resource não esta configurado!');
+  FRestResquest.Execute;
+  if not (FRestResponse.Content = EmptyStr) then
+    ProcessaJSON(FRestResponse.Content);
+end;
+
+function TConexaoAPI.GetRequestResource: string;
+begin
+  Result := FRestResquest.Resource;
+end;
+
+procedure TConexaoAPI.ProcessaJSON(aLista: string);
+var
+  objJSONArray: TJSONArray;
+  ObjJSON: TJSONObject;
+  I: Integer;
+  Comments: IModelComments;
+  FController: IControllerComments;
+begin
+  Comments := TComments.New;
+  FController := TControllerComments.New;
+  objJSONArray := TJSONObject.ParseJSONValue(aLista) as TJSONArray;
+  try
+    for I := 0 to objJSONArray.Count - 1 do
+    begin
+      ObjJSON := objJSONArray.Items[i] as TJSONObject;
+      FController.Salvar(tpInsert, Comments.JSONToObj(ObjJSON.ToJSON))
+    end;
+  finally
+    FreeAndNil(objJSONArray);
+  end;
+end;
+
+procedure TConexaoAPI.SetRequestResource(aValue: string);
+begin
+  FRestResquest.Resource := aValue;
+end;
+
+end.
